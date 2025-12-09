@@ -40,6 +40,9 @@ sudo ./deploy/setup.sh           # Para distribuciones estándar
 sudo ./deploy/setupNobara.sh     # Para Nobara Linux
 ```
 
+Se hizo un archivo para nobara ya que esa es la distro con la que
+trabajo, los archivos cambian ligeramente en solo el apartado de if.
+
 Este módulo:
 
 * Instala dependencias
