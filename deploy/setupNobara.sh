@@ -11,7 +11,7 @@ COMPOSE_SRC="https://gist.githubusercontent.com/DarkestAbed/0c1cee748bb9e3b22f89
 INDEX_FILE="${HTMLDIR}/index.html"
 SYSUSER="sysadmin"
 
-echo "==> Actualizando índices e instalando paquetes necesarios..."
+echo "Paso 1 (Nobara)"
 
 if command -v dnf >/dev/null 2>&1; then
   sudo dnf update -y
@@ -27,15 +27,15 @@ else
 fi
 
 
-echo "==> Creando estructura de directorios (idempotente)..."
+echo "Paso 2 (Nobara)"
 mkdir -p "${HTMLDIR}"
 chown root:root "${WORKDIR}" || true
 
-echo "==> Descargando docker-compose.yml a ${COMPOSE_DEST} (si no existe o se actualiza)..."
+echo "==> Descargando docker-compose.yml a ${COMPOSE_DEST}"
 curl -fsSL "${COMPOSE_SRC}" -o "${COMPOSE_DEST}.tmp" && mv "${COMPOSE_DEST}.tmp" "${COMPOSE_DEST}" || { echo "Error: no se pudo descargar docker-compose.yml"; exit 1; }
 chmod 600 "${COMPOSE_DEST}"
 
-echo "==> Generando index.html en el volumen mapeado..."
+echo "Paso 3 (Nobara)"
 cat > "${INDEX_FILE}" <<'HTML'
 <!doctype html>
 <html lang="es">
@@ -50,7 +50,7 @@ cat > "${INDEX_FILE}" <<'HTML'
 HTML
 chmod 644 "${INDEX_FILE}"
 
-echo "==> Creando usuario del sistema y agregando al grupo docker (idempotente)..."
+echo "Paso 4 (Nobara)"
 if id -u "${SYSUSER}" >/dev/null 2>&1; then
   echo "Usuario ${SYSUSER} ya existe."
 else
@@ -58,7 +58,7 @@ else
   echo "Usuario ${SYSUSER} creado."
 fi
 
-# Asegurar que el grupo docker exista y que el usuario pertenezca
+
 if getent group docker >/dev/null 2>&1; then
   usermod -aG docker "${SYSUSER}" || true
 else
@@ -69,3 +69,5 @@ fi
 echo "==> Configuración finalizada."
 echo "Docker-compose ubicado en: ${COMPOSE_DEST}"
 echo "Contenido web en: ${HTMLDIR}"
+
+echo "Terminado"

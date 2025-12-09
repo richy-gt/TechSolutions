@@ -13,7 +13,7 @@ SCP=$(command -v scp || true)
 REMOTE_DEST="${1:-localhost:/tmp/}"
 
 
-echo "==> Creando paquete comprimido de ${SRC_DIR} -> ${TMP_PATH}"
+echo "Creando comprimido de ${SRC_DIR} -> ${TMP_PATH}"
 if [ ! -d "${SRC_DIR}" ]; then
   echo "Error: directorio de origen ${SRC_DIR} no existe." >&2
   exit 2
@@ -21,7 +21,7 @@ fi
 
 tar -czf "${TMP_PATH}" -C "${SRC_DIR}" . || { echo "Error: tar falló"; exit 3; }
 
-echo "==> Sincronizando backup a directorio local ${LOCAL_BACKUP_DIR}"
+echo "==> Backup a directorio local ${LOCAL_BACKUP_DIR}"
 mkdir -p "${LOCAL_BACKUP_DIR}"
 if [ -n "${RSYNC}" ]; then
   rsync -av --progress "${TMP_PATH}" "${LOCAL_BACKUP_DIR}/" || { echo "Error: rsync falló"; exit 4; }
@@ -29,7 +29,7 @@ else
   cp -v "${TMP_PATH}" "${LOCAL_BACKUP_DIR}/" || { echo "Error: cp falló"; exit 4; }
 fi
 
-echo "==> Intentando transferencia remota con scp a ${REMOTE_DEST} (sintaxis demostrativa)"
+echo "Intentando transferencia remota a ${REMOTE_DEST}"
 if [ -n "${SCP}" ]; then
   ${SCP} "${TMP_PATH}" "${REMOTE_DEST}"
   SCP_EXIT_CODE=$?
@@ -42,7 +42,7 @@ else
   echo "Aviso: scp no disponible; omitiendo transferencia remota."
 fi
 
-echo "==> Respaldo completado:"
 echo "Archivo local: ${LOCAL_BACKUP_DIR}/${BACKUP_NAME}"
 echo "Archivo temporal: ${TMP_PATH}"
+echo "Listo"
 exit 0

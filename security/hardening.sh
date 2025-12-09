@@ -8,7 +8,7 @@ BACKUP_SCRIPT_PATH="/usr/local/bin/backup.sh"
 UFW_CMD="$(command -v ufw || true)"
 SSHD_CFG="/etc/ssh/sshd_config"
 
-echo "==> Aplicando políticas de firewall (ufw)..."
+echo "Aplicando políticas de firewall"
 if [ -n "${UFW_CMD}" ]; then
   ufw --force reset || true
   ufw default deny incoming
@@ -21,7 +21,7 @@ else
   echo "Aviso: ufw no encontrado. Instale ufw antes de ejecutar este script."
 fi
 
-echo "==> Endureciendo configuración del demonio SSH..."
+echo "Endureciendo configuración SSH"
 if [ -f "${SSHD_CFG}" ]; then
   if grep -qE '^\s*PermitRootLogin' "${SSHD_CFG}"; then
     sed -ri 's/^\s*PermitRootLogin\s+.*/PermitRootLogin no/' "${SSHD_CFG}"
@@ -38,7 +38,7 @@ else
   echo "Aviso: ${SSHD_CFG} no existe en este sistema."
 fi
 
-echo "==> Aplicando permisos de menor privilegio a archivos críticos..."
+echo "Aplicando permisos de menor privilegio a archivos críticos"
 if [ -f "${COMPOSE}" ]; then
   chown root:root "${COMPOSE}"
   chmod 600 "${COMPOSE}"
@@ -55,4 +55,4 @@ else
   echo "Aviso: ${BACKUP_SCRIPT_PATH} no encontrado; si crea el script de backup, asigne permisos 700."
 fi
 
-echo "==> Hardening completado."
+echo "Hardening completado"
