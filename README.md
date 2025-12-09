@@ -1,3 +1,10 @@
+<details>
+  <summary> </summary>
+
+  me estoy volviendo loco
+</details>
+
+
 # **TechSolutions – Proyecto de Automatización y Seguridad en Linux**
 
 Este repositorio contiene los módulos de despliegue, mantenimiento y endurecimiento del entorno Linux definidos para la empresa **TechSolutions**, junto con la evidencia del funcionamiento exitoso de cada script.
